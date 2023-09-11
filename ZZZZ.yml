@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  connection: local 
+  gather_facts: no
+
+  tasks:
+
+  - ansible.controller.export:
+      validate_certs: no
+      all: false
+      workflow_job_templates: "prueba"
+    register: output
+
+  - debug: 
+      msg: "{{output}}"
