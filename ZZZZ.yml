@@ -2,7 +2,11 @@
 - hosts: localhost
   connection: local 
   gather_facts: no
-
+  environment:
+     CONTROLLER_HOST: https://localhost
+     CONTROLLER_USERNAME: admin
+     CONTROLLER_PASSWORD: redhat00
+     CONTROLLER_VERIFY_SSL: False
   tasks:
 
   - ansible.controller.export:
