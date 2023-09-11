@@ -3,7 +3,7 @@
   connection: local 
   gather_facts: no
   environment:
-     CONTROLLER_HOST: https://localhost
+     CONTROLLER_HOST: https://192.168.0.150
      CONTROLLER_USERNAME: admin
      CONTROLLER_PASSWORD: redhat00
      CONTROLLER_VERIFY_SSL: False
