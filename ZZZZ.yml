@@ -35,10 +35,13 @@
       job_templates: ["{{output_job_template_info.assets.job_templates[0].natural_key.organization.name}} Step0","{{output_job_template_info.assets.job_templates[0].natural_key.organization.name}} Step1","{{output_job_template_info.assets.job_templates[0].natural_key.organization.name}} Step2"]
     register: list_job_template_info  
 
+  - debug: 
+      msg: "{{list_job_template_info}}"
+
   - name: Incorrect name job template
     ansible.builtin.fail:
       msg: "There was not exits jobs_templates, what a genius"
-    when: "{{ list_job_template_info|length != 3 }}"
+    when: list_job_template_info|length != 3
 
   - name: Get info workflow_job execute
     ansible.controller.export:
