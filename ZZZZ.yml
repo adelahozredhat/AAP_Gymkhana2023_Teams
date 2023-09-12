@@ -21,7 +21,8 @@
   - debug: 
       msg: "{{tower_workflow_job_id}}"
 
-  - ansible.controller.export:
+  - name: Get info job_template execute
+    ansible.controller.export:
       validate_certs: no
       all: false
       job_templates: "{{tower_job_template_name}}"
@@ -30,7 +31,8 @@
   - debug: 
       msg: "{{output}}"
 
-  - ansible.controller.export:
+  - name: Get info workflow_job execute
+    ansible.controller.export:
       validate_certs: no
       all: false
       workflow_job_templates: "{{tower_workflow_job_name}}"
