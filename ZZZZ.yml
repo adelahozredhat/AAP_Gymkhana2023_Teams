@@ -32,7 +32,7 @@
       msg: "{{output}}"
 
   - debug: 
-      msg: "{{output.job_templates[0].natural_key.organization.name}}"
+      msg: "{{output.assets.job_templates[0].natural_key.organization.name}}"
 
   - name: Get info workflow_job execute
     ansible.controller.export:
@@ -45,25 +45,25 @@
       msg: "{{output}}"
 
   - debug: 
-      msg: "{{output.workflow_job_templates[0].organization}}"
+      msg: "{{output.assets.workflow_job_templates[0].organization}}"
 
   - debug: 
-      msg: "{{output.workflow_job_templates[0].related.workflow_nodes}}"
+      msg: "{{output.assets.workflow_job_templates[0].related.workflow_nodes}}"
 
   - name: Incorrect name Workflow
     ansible.builtin.fail:
       msg: "There was no better name for the workflow, what a genius ::: '{{tower_workflow_job_name}}'"
-    when: tower_workflow_job_name != "Workflow to validate {{output.job_templates[0].natural_key.organization.name}}"
+    when: tower_workflow_job_name != "Workflow to validate {{output.assets.job_templates[0].natural_key.organization.name}}"
 
   - name: Incorrect order job_templates in workflow
     ansible.builtin.fail:
       msg: "There was no better create workflow without organization, what a genius"
     # when: item
-    loop: output.workflow_job_templates[0].related.workflow_nodes
+    loop: output.assets.workflow_job_templates[0].related.workflow_nodes
 
   - name: Incorrect name job template
     ansible.builtin.fail:
       msg: "There was no better create workflow without organization, what a genius"
     # when: item
-    loop: output.workflow_job_templates[0].related.workflow_nodes
+    loop: output.assets.workflow_job_templates[0].related.workflow_nodes
 
