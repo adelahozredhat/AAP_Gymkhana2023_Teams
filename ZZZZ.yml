@@ -28,6 +28,9 @@
       job_templates: "{{tower_job_template_name}}"
     register: output_job_template_info
 
+  - debug: 
+      msg: ["{{output_job_template_info.assets.job_templates[0].natural_key.organization.name}} Step0","{{output_job_template_info.assets.job_templates[0].natural_key.organization.name}} Step1","{{output_job_template_info.assets.job_templates[0].natural_key.organization.name}} Step2"]
+
   - name: Get list job_template execute
     ansible.controller.export:
       validate_certs: no
@@ -38,7 +41,7 @@
   - debug: 
       msg: "{{list_job_template_info.assets.job_templates}}"
 
-  - name: Incorrect name job template
+  - name: Incorrect names jobs templates
     ansible.builtin.fail:
       msg: "There was not exits jobs_templates, what a genius"
     when: list_job_template_info.assets.job_templates|length != 3
