@@ -5,6 +5,9 @@
 
   tasks:
 
-  - ansible.builtin.debug: 
-      msg: "Hola cara cola"
+  
+
+  - debug: 
+      msg: "{{output.assets.workflow_job_templates[0].related.workflow_nodes}}"
+    when: checks_steps0 and checks_steps1
       

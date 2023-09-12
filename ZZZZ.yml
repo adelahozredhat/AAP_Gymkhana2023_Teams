@@ -26,20 +26,26 @@
       validate_certs: no
       all: false
       job_templates: "{{tower_job_template_name}}"
-    register: output
+    register: output_job_template_info
 
-  - debug: 
-      msg: "{{output}}"
+  - name: Get list job_template execute
+    ansible.controller.export:
+      validate_certs: no
+      all: false
+      job_templates: ["{{output_job_template_info.assets.job_templates[0].natural_key.organization.name}} Step0","{{output_job_template_info.assets.job_templates[0].natural_key.organization.name}} Step1","{{output_job_template_info.assets.job_templates[0].natural_key.organization.name}} Step2"]
+    register: list_job_template_info  
 
-  - debug: 
-      msg: "{{output.assets.job_templates[0].natural_key.organization.name}}"
+  - name: Incorrect name job template
+    ansible.builtin.fail:
+      msg: "There was not exits jobs_templates, what a genius"
+    when: "{{ list_job_template_info|length != 3 }}"
 
   - name: Get info workflow_job execute
     ansible.controller.export:
       validate_certs: no
       all: false
       workflow_job_templates: "{{tower_workflow_job_name}}"
-    register: output
+    register: output_workflow_info
 
   - debug: 
       msg: "{{output}}"
@@ -53,17 +59,18 @@
   - name: Incorrect name Workflow
     ansible.builtin.fail:
       msg: "There was no better name for the workflow, what a genius ::: '{{tower_workflow_job_name}}'"
-    when: tower_workflow_job_name != "Workflow to validate {{output.assets.job_templates[0].natural_key.organization.name}}"
+    when: tower_workflow_job_name != "Workflow to validate {{output_job_template_info.assets.job_templates[0].natural_key.organization.name}}"
+
+  - name: Incorrect organization select in Workflow
+    ansible.builtin.fail:
+      msg: "There was no better create workflow without organization, what a genius"
+    when: output.assets.workflow_job_templates[0].organization != output_job_template_info.assets.job_templates[0].natural_key.organization.name
 
   - name: Incorrect order job_templates in workflow
-    ansible.builtin.fail:
-      msg: "There was no better create workflow without organization, what a genius"
-    # when: item
+    set_fact: 
+      something: "{{ something + [ { job_template_name: item.unified_job_template.name , job_template_id: item.identifier, success_nodes: related.success_nodes} ] }}"
     loop: output.assets.workflow_job_templates[0].related.workflow_nodes
 
-  - name: Incorrect name job template
-    ansible.builtin.fail:
-      msg: "There was no better create workflow without organization, what a genius"
-    # when: item
-    loop: output.assets.workflow_job_templates[0].related.workflow_nodes
-
+  - name: Oki checks 0
+    ansible.builtin.set_stats:
+      checks_steps0: true
