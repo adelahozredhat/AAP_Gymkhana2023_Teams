@@ -45,18 +45,25 @@
       msg: "{{output}}"
 
   - debug: 
-      msg: "{{output.workflow_job_templates[].organization}}"
+      msg: "{{output.workflow_job_templates[0].organization}}"
 
   - debug: 
-      msg: "{{output.workflow_job_templates[].related.workflow_nodes}}"
+      msg: "{{output.workflow_job_templates[0].related.workflow_nodes}}"
 
   - name: Incorrect name Workflow
     ansible.builtin.fail:
       msg: "There was no better name for the workflow, what a genius ::: '{{tower_workflow_job_name}}'"
-    when: tower_workflow_job_name != "Workflow_to_validate"
+    when: tower_workflow_job_name != "Workflow to validate {{output.job_templates[0].natural_key.organization.name}}"
 
-  - name: Incorrect organization in workflow
+  - name: Incorrect order job_templates in workflow
     ansible.builtin.fail:
       msg: "There was no better create workflow without organization, what a genius"
-    when: output.workflow_job_templates[].organization != output.job_templates[0].natural_key.organization.name
+    # when: item
+    loop: output.workflow_job_templates[0].related.workflow_nodes
+
+  - name: Incorrect name job template
+    ansible.builtin.fail:
+      msg: "There was no better create workflow without organization, what a genius"
+    # when: item
+    loop: output.workflow_job_templates[0].related.workflow_nodes
 
