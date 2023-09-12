@@ -41,7 +41,7 @@
   - name: Incorrect name job template
     ansible.builtin.fail:
       msg: "There was not exits jobs_templates, what a genius"
-    when: assets.job_templates.list_job_template_info|length != 3
+    when: list_job_template_info.assets.job_templates|length != 3
 
   - name: Get info workflow_job execute
     ansible.controller.export:
