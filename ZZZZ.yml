@@ -9,10 +9,28 @@
      CONTROLLER_VERIFY_SSL: False
   tasks:
 
+  - debug: 
+      msg: "{{tower_job_template_name}}"
+
+  - debug: 
+      msg: "{{aws_job_template_name}}"
+
+  - debug: 
+      msg: "{{job_template_name}}"
+
   - ansible.controller.export:
       validate_certs: no
       all: false
       workflow_job_templates: "prueba"
+    register: output
+
+  - debug: 
+      msg: "{{output}}"
+
+  - ansible.controller.export:
+      validate_certs: no
+      all: false
+      job_templates: "prueba"
     register: output
 
   - debug: 
