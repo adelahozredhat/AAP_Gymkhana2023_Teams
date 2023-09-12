@@ -24,7 +24,7 @@
   - ansible.controller.export:
       validate_certs: no
       all: false
-      job_templates: "tower_job_template_name"
+      job_templates: "{{tower_job_template_name}}"
     register: output
 
   - debug: 
@@ -33,7 +33,7 @@
   - ansible.controller.export:
       validate_certs: no
       all: false
-      workflow_job_templates: "tower_workflow_job_name"
+      workflow_job_templates: "{{tower_workflow_job_name}}"
     register: output
 
   - debug: 
