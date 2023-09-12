@@ -13,15 +13,18 @@
       msg: "{{tower_job_template_name}}"
 
   - debug: 
-      msg: "{{aws_job_template_name}}"
+      msg: "{{tower_job_template_id}}"
 
   - debug: 
-      msg: "{{job_template_name}}"
+      msg: "{{tower_workflow_job_name}}"
+
+  - debug: 
+      msg: "{{tower_workflow_job_id}}"
 
   - ansible.controller.export:
       validate_certs: no
-      all: false
-      workflow_job_templates: "prueba"
+      all: true
+      job_templates: "tower_job_template_name"
     register: output
 
   - debug: 
@@ -29,9 +32,14 @@
 
   - ansible.controller.export:
       validate_certs: no
-      all: false
-      job_templates: "prueba"
+      all: true
+      workflow_job_templates: "tower_workflow_job_name"
     register: output
 
   - debug: 
       msg: "{{output}}"
+
+  - name: Incorrect name Workflow
+    ansible.builtin.fail:
+      msg: "There was no better name for the workflow, what a genius ::: '{{tower_workflow_job_name}}'"
+    when: tower_workflow_job_name != "Workflow_to_validate"
