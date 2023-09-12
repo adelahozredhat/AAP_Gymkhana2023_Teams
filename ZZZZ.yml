@@ -65,7 +65,7 @@
   - name: Incorrect name Workflow
     ansible.builtin.fail:
       msg: "There was no better name for the workflow, what a genius ::: '{{tower_workflow_job_name}}'"
-    when: tower_workflow_job_name != "{{output_job_template_info.assets.job_templates[0].natural_key.organization.name}} Workflow to validate"
+    when: tower_workflow_job_name != output_job_template_info.assets.job_templates[0].natural_key.organization.name+" Workflow to validate"
 
   - name: Incorrect organization select in Workflow
     ansible.builtin.fail:
