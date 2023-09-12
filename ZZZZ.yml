@@ -31,6 +31,9 @@
   - debug: 
       msg: "{{output}}"
 
+  - debug: 
+      msg: "{{output.job_templates[0].natural_key.organization.name}}"
+
   - name: Get info workflow_job execute
     ansible.controller.export:
       validate_certs: no
@@ -41,7 +44,19 @@
   - debug: 
       msg: "{{output}}"
 
+  - debug: 
+      msg: "{{output.workflow_job_templates[].organization}}"
+
+  - debug: 
+      msg: "{{output.workflow_job_templates[].related.workflow_nodes}}"
+
   - name: Incorrect name Workflow
     ansible.builtin.fail:
       msg: "There was no better name for the workflow, what a genius ::: '{{tower_workflow_job_name}}'"
     when: tower_workflow_job_name != "Workflow_to_validate"
+
+  - name: Incorrect organization in workflow
+    ansible.builtin.fail:
+      msg: "There was no better create workflow without organization, what a genius"
+    when: output.workflow_job_templates[].organization != output.job_templates[0].natural_key.organization.name
+
