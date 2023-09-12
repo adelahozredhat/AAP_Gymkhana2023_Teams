@@ -49,16 +49,10 @@
       msg: "There was no better name for the workflow, what a genius ::: '{{tower_workflow_job_name}}'"
     when: tower_workflow_job_name != output_job_template_info.assets.job_templates[0].natural_key.organization.name+" Workflow to validate"
 
-  - debug: 
-      msg: "{{output_workflow_info.assets.workflow_job_templates[0].organization}}"
-
-  - debug: 
-      msg: "{{output_job_template_info.assets.job_templates[0].natural_key.organization.name}}"
-
   - name: Incorrect organization select in Workflow
     ansible.builtin.fail:
       msg: "There was no better create workflow without organization, what a genius"
-    when:  output_workflow_info.assets.workflow_job_templates[0].organization != 
+    when:  output_workflow_info.assets.workflow_job_templates[0].organization.name != output_job_template_info.assets.job_templates[0].natural_key.organization.name
 
   - name: Incorrect order job_templates in workflow
     set_fact: 
