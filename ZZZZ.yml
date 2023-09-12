@@ -36,12 +36,12 @@
     register: list_job_template_info  
 
   - debug: 
-      msg: "{{list_job_template_info}}"
+      msg: "{{list_job_template_info.assets.job_templates}}"
 
   - name: Incorrect name job template
     ansible.builtin.fail:
       msg: "There was not exits jobs_templates, what a genius"
-    when: list_job_template_info|length != 3
+    when: assets.job_templates.list_job_template_info|length != 3
 
   - name: Get info workflow_job execute
     ansible.controller.export:
@@ -51,13 +51,13 @@
     register: output_workflow_info
 
   - debug: 
-      msg: "{{output}}"
+      msg: "{{output_workflow_info}}"
 
   - debug: 
-      msg: "{{output.assets.workflow_job_templates[0].organization}}"
+      msg: "{{output_workflow_info.assets.workflow_job_templates[0].organization}}"
 
   - debug: 
-      msg: "{{output.assets.workflow_job_templates[0].related.workflow_nodes}}"
+      msg: "{{output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes}}"
 
   - name: Incorrect name Workflow
     ansible.builtin.fail:
