@@ -9,18 +9,6 @@
      CONTROLLER_VERIFY_SSL: False
   tasks:
 
-  - debug: 
-      msg: "{{tower_job_template_name}}"
-
-  - debug: 
-      msg: "{{tower_job_template_id}}"
-
-  - debug: 
-      msg: "{{tower_workflow_job_name}}"
-
-  - debug: 
-      msg: "{{tower_workflow_job_id}}"
-
   - name: Get info job_template execute
     ansible.controller.export:
       validate_certs: no
@@ -56,21 +44,21 @@
   - debug: 
       msg: "{{output_workflow_info}}"
 
-  - debug: 
-      msg: "{{output_workflow_info.assets.workflow_job_templates[0].organization}}"
-
-  - debug: 
-      msg: "{{output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes}}"
-
   - name: Incorrect name Workflow
     ansible.builtin.fail:
       msg: "There was no better name for the workflow, what a genius ::: '{{tower_workflow_job_name}}'"
     when: tower_workflow_job_name != output_job_template_info.assets.job_templates[0].natural_key.organization.name+" Workflow to validate"
 
+  - debug: 
+      msg: "{{output_workflow_info.assets.workflow_job_templates[0].organization}}"
+
+  - debug: 
+      msg: "{{output_job_template_info.assets.job_templates[0].natural_key.organization.name}}"
+
   - name: Incorrect organization select in Workflow
     ansible.builtin.fail:
       msg: "There was no better create workflow without organization, what a genius"
-    when: output_workflow_info.assets.workflow_job_templates[0].organization != output_job_template_info.assets.job_templates[0].natural_key.organization.name
+    when:  output_workflow_info.assets.workflow_job_templates[0].organization != 
 
   - name: Incorrect order job_templates in workflow
     set_fact: 
