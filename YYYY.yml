@@ -13,7 +13,7 @@
     ansible.builtin.fail:
       msg: "Incorrect var value, what a genius"
     when: no_funciona != "si funciona"
-    no_log: var_logs
+    no_log: "{{var_logs}}"
 
   - name: Oki checks 1
     ansible.builtin.set_stats:
