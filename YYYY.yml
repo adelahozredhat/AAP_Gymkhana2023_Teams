@@ -5,6 +5,10 @@
 
   tasks:
 
+
+  - debug: 
+      msg: "{{var_logs}}"
+
   - name: Incorrect var
     ansible.builtin.fail:
       msg: "Incorrect var value, what a genius"
