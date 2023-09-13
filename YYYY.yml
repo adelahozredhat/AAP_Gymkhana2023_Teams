@@ -17,4 +17,5 @@
 
   - name: Oki checks 1
     ansible.builtin.set_stats:
-      checks_steps1: true
+      data:
+        checks_steps1: true

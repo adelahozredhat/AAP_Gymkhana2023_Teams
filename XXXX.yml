@@ -5,9 +5,16 @@
 
   tasks:
 
-  
 
   - debug: 
-      msg: "{{output.assets.workflow_job_templates[0].related.workflow_nodes}}"
+      msg: "{{checks_steps0}}"
+
+
+  - debug: 
+      msg: "{{checks_steps1}}"
+
+
+  - debug: 
+      msg: "Correcto"
     when: checks_steps0 and checks_steps1
       
