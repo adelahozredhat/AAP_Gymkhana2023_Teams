@@ -56,7 +56,7 @@
   - name: Incorrect organization select in Workflow
     ansible.builtin.fail:
       msg: "There was no better create workflow without organization, what a genius"
-    when:  output_workflow_info.assets.workflow_job_templates[0].organization.name != output_job_template_info.assets.job_templates[0].natural_key.organization.name
+    when:  output_workflow_info.assets.workflow_job_templates[0].organization.name == None or output_workflow_info.assets.workflow_job_templates[0].organization.name != output_job_template_info.assets.job_templates[0].natural_key.organization.name
 
 
 
