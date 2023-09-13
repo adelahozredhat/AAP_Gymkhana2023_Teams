@@ -21,13 +21,13 @@
     register: output_job_template_info
 
   - debug: 
-      msg: 
+      msg: "{{steps[output_job_template_info.assets.job_templates[0].natural_key.organization.name]}}"
 
   - name: Get list job_template execute
     ansible.controller.export:
       validate_certs: no
       all: false
-      job_templates: "{{steps[output_job_template_info.assets.job_templates[0].natural_key.organization.name]}}"]
+      job_templates: "{{steps[output_job_template_info.assets.job_templates[0].natural_key.organization.name]}}"
     register: list_job_template_info  
 
   - debug: 
