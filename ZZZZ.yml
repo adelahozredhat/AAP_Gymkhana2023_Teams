@@ -52,12 +52,34 @@
       workflows_nodes: "{{ workflows_nodes | default([]) | combine ([ {item.unified_job_template.name : { 'success_nodes': item.related.success_nodes} }]) }}"
       jobtemplates_ids_workflow: "{{ jobtemplates_ids_workflow | default({}) | combine ({ item.identifier : { 'job_template_name': item.unified_job_template.name } }) }}"
     loop: "{{output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes}}"
+      
+  - name: Incorrect order job_templates in workflow
+    set_fact: 
+      workflows_nodes_success: |
+        {{ item.unified_job_template.name }}:
+          {% for v in item.related.success_nodes.items() %}
+            - {{ jobtemplates_ids_workflow[v.identifier].job_template_name }}
+          {% endfor %}
+      # workflows_nodes_fail: |
+      #   {{ item.unified_job_template.name }}:
+      #     {% for k,v in vlans.items() %}
+      #       mode: {{ v.mode|d({})|dict2items }}
+      #     {% endfor %}
+      # workflows_nodes_always: |
+      #   {{ item.unified_job_template.name }}:
+      #     {% for k,v in vlans.items() %}
+      #       mode: {{ v.mode|d({})|dict2items }}
+      #     {% endfor %}
+    loop: "{{output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes}}"
 
   - debug: 
       msg: "{{workflows_nodes}}"
 
   - debug: 
       msg: "{{jobtemplates_ids_workflow}}"
+
+  - debug: 
+      msg: "{{workflows_nodes_success}}"
 
   - name: Oki checks 0
     ansible.builtin.set_stats:
