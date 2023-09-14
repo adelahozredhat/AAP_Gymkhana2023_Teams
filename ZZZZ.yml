@@ -67,6 +67,7 @@
               - {{ x.unified_job_template.name }}_{{ jobtemplates_ids_workflow[v.identifier].job_template_name }}
             {% endfor %}
         {% endfor %}
+      structure: "{{modes|from_yaml}}"
 
   - debug: 
       msg: "{{workflows_nodes}}"
@@ -76,6 +77,9 @@
 
   - debug: 
       msg: "{{workflows_nodes_success}}"
+
+  - debug: 
+      msg: "{{structure}}"
 
   - name: Oki checks 0
     ansible.builtin.set_stats:
