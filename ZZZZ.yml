@@ -56,6 +56,7 @@
   - name: Incorrect order job_templates in workflow
     set_fact: 
       workflows_nodes_success: |
+        workflows_nodes_success:
         {% for x in output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes %}
             {% for v in x.related.success_nodes %}
               - {{ x.unified_job_template.name }}_{{ jobtemplates_ids_workflow[v.identifier].job_template_name }}
