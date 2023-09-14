@@ -56,21 +56,12 @@
   - name: Incorrect order job_templates in workflow
     set_fact: 
       workflows_nodes_success: |
-        {{ item.unified_job_template.name }}:
-          {% for v in item.related.success_nodes %}
-            - {{ jobtemplates_ids_workflow[v.identifier].job_template_name }}
-          {% endfor %}
-      # workflows_nodes_fail: |
-      #   {{ item.unified_job_template.name }}:
-      #     {% for k,v in vlans.items() %}
-      #       mode: {{ v.mode|d({})|dict2items }}
-      #     {% endfor %}
-      # workflows_nodes_always: |
-      #   {{ item.unified_job_template.name }}:
-      #     {% for k,v in vlans.items() %}
-      #       mode: {{ v.mode|d({})|dict2items }}
-      #     {% endfor %}
-    loop: "{{output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes}}"
+        {% for x in output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes %}
+          {{ x.unified_job_template.name }}:
+            {% for v in x.related.success_nodes %}
+              - {{ jobtemplates_ids_workflow[v.identifier].job_template_name }}
+            {% endfor %}
+        {% endfor %}
 
   - debug: 
       msg: "{{workflows_nodes}}"
