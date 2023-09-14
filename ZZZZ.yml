@@ -56,19 +56,17 @@
   - name: Incorrect order job_templates in workflow
     set_fact: 
       workflows_nodes_success: |
-        [
-        {% for x in output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes %}  
-            {% for v in x.related.success_nodes %}
-            {{ (x.unified_job_template.name + jobtemplates_ids_workflow[v.identifier].job_template_name) | replace(" ","")}},
-            {% endfor %}
-            {% for v in x.related.failure_nodes %}
-            {{ (x.unified_job_template.name + jobtemplates_ids_workflow[v.identifier].job_template_name) | replace(" ","")}},
-            {% endfor %}
-            {% for v in x.related.always_nodes %}
-            {{ (x.unified_job_template.name + jobtemplates_ids_workflow[v.identifier].job_template_name) | replace(" ","")}},
-            {% endfor %}
-        {% endfor %}
-        ]
+{% for x in output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes %}  
+{% for v in x.related.success_nodes %}
+- {{ (x.unified_job_template.name + jobtemplates_ids_workflow[v.identifier].job_template_name) | replace(" ","")}},
+{% endfor %}
+{% for v in x.related.failure_nodes %}
+- {{ (x.unified_job_template.name + jobtemplates_ids_workflow[v.identifier].job_template_name) | replace(" ","")}},
+{% endfor %}
+{% for v in x.related.always_nodes %}
+- {{ (x.unified_job_template.name + jobtemplates_ids_workflow[v.identifier].job_template_name) | replace(" ","")}},
+{% endfor %}
+{% endfor %}
 
   - debug: 
       msg: "{{workflows_nodes}}"
@@ -80,7 +78,7 @@
       msg: "{{workflows_nodes_success}}"
 
   - debug: 
-      msg: "{{workflows_nodes_success|from_json}}"
+      msg: "{{workflows_nodes_success|trim|from_yaml}}"
 
   - name: Oki checks 0
     ansible.builtin.set_stats:
