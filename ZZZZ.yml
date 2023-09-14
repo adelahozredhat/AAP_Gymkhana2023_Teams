@@ -59,13 +59,13 @@
         workflows_nodes_success:
         {% for x in output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes %}
             {% for v in x.related.success_nodes %}
-              - "{{ x.unified_job_template.name }}_{{ jobtemplates_ids_workflow[v.identifier].job_template_name }}"
+              - '{{ x.unified_job_template.name }}_{{ jobtemplates_ids_workflow[v.identifier].job_template_name }}
             {% endfor %}
             {% for v in x.related.failure_nodes %}
-              - "{{ x.unified_job_template.name }}_{{ jobtemplates_ids_workflow[v.identifier].job_template_name }}"
+              - '{{ x.unified_job_template.name }}_{{ jobtemplates_ids_workflow[v.identifier].job_template_name }}'
             {% endfor %}
             {% for v in x.related.always_nodes %}
-              - "{{ x.unified_job_template.name }}_{{ jobtemplates_ids_workflow[v.identifier].job_template_name }}"
+              - '{{ x.unified_job_template.name }}_{{ jobtemplates_ids_workflow[v.identifier].job_template_name }}'
             {% endfor %}
         {% endfor %}
       
