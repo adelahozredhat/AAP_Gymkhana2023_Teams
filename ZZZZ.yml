@@ -2,13 +2,13 @@
 - hosts: localhost
   connection: local 
   gather_facts: no
-  environment:
-    CONTROLLER_HOST: https://192.168.0.150
-    CONTROLLER_USERNAME: admin
-    CONTROLLER_PASSWORD: redhat00
-    CONTROLLER_VERIFY_SSL: False
   vars_files:
-    - vault.yml
+    - vaultZZZZ.yml
+  environment:
+    CONTROLLER_HOST: "{{connection_aap.CONTROLLER_HOST}}"
+    CONTROLLER_USERNAME: "{{connection_aap.CONTROLLER_USERNAME}}"
+    CONTROLLER_PASSWORD: "{{connection_aap.CONTROLLER_PASSWORD}}"
+    CONTROLLER_VERIFY_SSL: "{{connection_aap.CONTROLLER_VERIFY_SSL}}"
   tasks:
 
   - name: Get info job_template execute
