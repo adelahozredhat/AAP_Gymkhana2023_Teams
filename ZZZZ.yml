@@ -20,18 +20,12 @@
       job_templates: "{{tower_job_template_name}}"
     register: output_job_template_info
 
-  - debug: 
-      msg: "{{steps[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps']}}"
-
   - name: Get list job_template execute
     ansible.controller.export:
       validate_certs: no
       all: false
       job_templates: "{{steps[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps']}}"
     register: list_job_template_info  
-
-  - debug: 
-      msg: "{{list_job_template_info.assets.job_templates}}"
 
   - name: Incorrect names jobs templates
     ansible.builtin.fail:
@@ -45,9 +39,6 @@
       workflow_job_templates: "{{tower_workflow_job_name}}"
     register: output_workflow_info
 
-  - debug: 
-      msg: "{{output_workflow_info}}"
-
   - name: Incorrect name Workflow
     ansible.builtin.fail:
       msg: "There was no better name for the workflow, what a genius ::: '{{tower_workflow_job_name}}'"
@@ -57,16 +48,14 @@
     ansible.builtin.fail:
       msg: "There was no better create workflow without organization, what a genius"
     when:  output_workflow_info.assets.workflow_job_templates[0].organization is none or output_workflow_info.assets.workflow_job_templates[0].organization.name != output_job_template_info.assets.job_templates[0].natural_key.organization.name
-
-
-
-  - debug: 
-      msg: "{{output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes}}"
       
   - name: Incorrect order job_templates in workflow
     set_fact: 
-      something: "{{ something + [ { 'job_template_name': item.unified_job_template.name , 'job_template_id': item.identifier, 'success_nodes': item.related.success_nodes} ] }}"
+      something: "{{ something + [ item.unified_job_template.name:{ 'job_template_name': item.unified_job_template.name , 'job_template_id': item.identifier, 'success_nodes': item.related.success_nodes} ] }}"
     loop: "{{output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes}}"
+
+  - debug: 
+      msg: "{{something}}"
 
   - name: Oki checks 0
     ansible.builtin.set_stats:
