@@ -58,13 +58,13 @@
       workflows_nodes_success: |
         {% for x in output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes %}  
         {% for v in x.related.success_nodes %}
-        - {{ (x.unified_job_template.name + jobtemplates_ids_workflow[v.identifier].job_template_name) | replace(" ","")}},
+        - {{ (x.unified_job_template.name + jobtemplates_ids_workflow[v.identifier].job_template_name)}}
         {% endfor %}
         {% for v in x.related.failure_nodes %}
-        - {{ (x.unified_job_template.name + jobtemplates_ids_workflow[v.identifier].job_template_name) | replace(" ","")}},
+        - {{ (x.unified_job_template.name + jobtemplates_ids_workflow[v.identifier].job_template_name)}}
         {% endfor %}
         {% for v in x.related.always_nodes %}
-        - {{ (x.unified_job_template.name + jobtemplates_ids_workflow[v.identifier].job_template_name) | replace(" ","")}},
+        - {{ (x.unified_job_template.name + jobtemplates_ids_workflow[v.identifier].job_template_name)}}
         {% endfor %}
         {% endfor %}
 
@@ -75,10 +75,7 @@
       msg: "{{jobtemplates_ids_workflow}}"
 
   - debug: 
-      msg: "{{workflows_nodes_success}}"
-
-  - debug: 
-      msg: "{{workflows_nodes_success|trim|from_yaml}}"
+      msg: "{{workflows_nodes_success|from_yaml}}"
 
   - name: Oki checks 0
     ansible.builtin.set_stats:
