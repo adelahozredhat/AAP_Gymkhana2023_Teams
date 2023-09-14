@@ -69,7 +69,7 @@
         {% endfor %}
 
   - debug: 
-      msg: "{{workflows_nodes_success|from_yaml | difference(steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls']|length > 0)}}"
+      msg: "{{workflows_nodes_success|from_yaml | difference(steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls'])|length > 0}}"
 
   - debug: 
       msg: "{{steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls']| difference(workflows_nodes_success|from_yaml)|length > 0}}"
