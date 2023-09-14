@@ -51,7 +51,7 @@
       
   - name: Incorrect order job_templates in workflow
     set_fact: 
-      something: "{{ something + [ item.unified_job_template.name:{ 'job_template_name': item.unified_job_template.name , 'job_template_id': item.identifier, 'success_nodes': item.related.success_nodes} ] }}"
+      something: "{{ something + [ '{{item.unified_job_template.name}}':{ 'job_template_name': item.unified_job_template.name , 'job_template_id': item.identifier, 'success_nodes': item.related.success_nodes} ] }}"
     loop: "{{output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes}}"
 
   - debug: 
