@@ -67,7 +67,7 @@
               - {{ x.unified_job_template.name }}_{{ jobtemplates_ids_workflow[v.identifier].job_template_name }}
             {% endfor %}
         {% endfor %}
-      structure: "{{modes|from_yaml}}"
+      structure: "{{workflows_nodes_success|from_yaml}}"
 
   - debug: 
       msg: "{{workflows_nodes}}"
