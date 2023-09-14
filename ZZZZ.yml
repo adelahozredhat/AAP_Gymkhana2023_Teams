@@ -69,16 +69,11 @@
         {% endfor %}
 
   - debug: 
-      msg: "{{workflows_nodes}}"
+      msg: "{{workflows_nodes_success|from_yaml | difference(steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls']}}"
 
   - debug: 
-      msg: "{{jobtemplates_ids_workflow}}"
+      msg: "{{steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls']| difference(workflows_nodes_success|from_yaml)|length > 0}}"
 
-  - debug: 
-      msg: "{{workflows_nodes_success|from_yaml}}"
-
-  - debug: 
-      msg: "{{steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls']}}"
 
   - name: Incorrect order job_templates in workflow
     ansible.builtin.fail:
