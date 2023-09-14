@@ -67,6 +67,9 @@
               - {{ x.unified_job_template.name }}_{{ jobtemplates_ids_workflow[v.identifier].job_template_name }}
             {% endfor %}
         {% endfor %}
+      
+  - name: Incorrect order job_templates in workflow
+    set_fact: 
       structure: "{{workflows_nodes_success|from_yaml}}"
 
   - debug: 
