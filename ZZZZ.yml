@@ -49,11 +49,15 @@
       
   - name: Incorrect order job_templates in workflow
     set_fact: 
-      something: "{{ something | default({}) | combine ({ item.unified_job_template.name : { 'success_nodes': item.related.success_nodes} }) | combine ({ item.unified_job_template.name : { 'job_template_name': item.unified_job_template.name }}) }}"
+      workflows_nodes: "{{ workflows_nodes | default([]) | combine ([ item.unified_job_template.name : { 'success_nodes': item.related.success_nodes} ]) }}"
+      jobtemplates_ids_workflow: "{{ jobtemplates_ids_workflow | default({}) | combine ({ item.identifier : { 'job_template_name': item.unified_job_template.name } }) }}"
     loop: "{{output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes}}"
 
   - debug: 
-      msg: "{{something}}"
+      msg: "{{workflows_nodes}}"
+
+  - debug: 
+      msg: "{{jobtemplates_ids_workflow}}"
 
   - name: Oki checks 0
     ansible.builtin.set_stats:
