@@ -57,7 +57,7 @@
     set_fact: 
       workflows_nodes_success: |
         {{ item.unified_job_template.name }}:
-          {% for v in item.related.success_nodes.items() %}
+          {% for v in item.related.success_nodes %}
             - {{ jobtemplates_ids_workflow[v.identifier].job_template_name }}
           {% endfor %}
       # workflows_nodes_fail: |
