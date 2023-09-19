@@ -7,13 +7,7 @@
 
   tasks:
 
-  - debug:
-      msg: "{{checks_steps0}}"
-
-  - debug:
-      msg: "{{checks_steps1}}"
-
-  - debug:
+  - debug: 
       msg: "Correcto"
     when: checks_steps0 and checks_steps1
 
