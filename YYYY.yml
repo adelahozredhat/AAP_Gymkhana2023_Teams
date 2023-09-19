@@ -4,10 +4,10 @@
   gather_facts: no
 
   tasks:
-
-
-  - debug: 
-      msg: "{{var_logs}}"
+    
+  - name: hostvars
+    debug:
+      var: "hostvars"
 
   - name: Incorrect var
     ansible.builtin.fail:
