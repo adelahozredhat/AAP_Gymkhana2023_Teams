@@ -5,9 +5,9 @@
 
   tasks:
     
-  - name: hostvars
+  - name: ansible_facts
     debug:
-      var: "hostvars"
+      var: "ansible_facts"
 
   - name: Incorrect var
     ansible.builtin.fail:
