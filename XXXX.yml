@@ -1,14 +1,17 @@
 ---
 - hosts: localhost
-  connection: local 
+  connection: local
   gather_facts: no
   vars_files:
     - vaultXXXX.yml
 
   tasks:
 
-
   - debug: 
       msg: "Correcto"
     when: checks_steps0 and checks_steps1
-      
+
+  - name: Sending message
+    ansible.builtin.uri:
+      url: "https://api.telegram.org/bot{{ tokenBot }}/sendmessage?chat_id={{ gymkanaGroups[team_name]['chatID'] }}&parse_mode=HTML&text={{ gymkanaGroups[team_name]['msgVar'] | urlencode }}"
+
