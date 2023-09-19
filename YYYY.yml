@@ -6,8 +6,7 @@
   tasks:
     
   - name: ansible_facts
-    debug:
-      var: "ansible_facts"
+    debug: var=hostvars[inventory_hostname]
 
   - name: Incorrect var
     ansible.builtin.fail:
