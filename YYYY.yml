@@ -4,9 +4,11 @@
   gather_facts: no
 
   tasks:
-    
-  - name: ansible_facts
-    debug: var=hostvars[inventory_hostname]
+
+  - name: Incorrect names jobs templates
+    ansible.builtin.fail:
+      msg: "There was not included job_template in a workflow, what a genius"
+    when: tower_workflow_job_name is undefined
 
   - name: Incorrect var
     ansible.builtin.fail:
