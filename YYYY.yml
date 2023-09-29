@@ -2,6 +2,8 @@
 - hosts: localhost
   connection: local 
   gather_facts: no
+  vars_files:
+    - vaultYYYY.yml
 
   tasks:
 
@@ -12,11 +14,11 @@
 
   - name: Incorrect var
     ansible.builtin.fail:
-      msg: "Incorrect var value, what a genius"
-    when: not_work != "work"
+      msg: "Incorrect var value, what a genius :: value is {{work_message}}"
+    when: not_work != work_message
     no_log: "{{var_logs}}"
 
   - name: Oki checks 1
     ansible.builtin.set_stats:
       data:
-        checks_steps1: true
+        checks_steps_W: "{{messages.checks.vars}}"

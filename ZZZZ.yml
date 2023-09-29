@@ -76,4 +76,4 @@
   - name: Oki checks 0
     ansible.builtin.set_stats:
       data:
-        checks_steps0: true
+        checks_steps_V: "{{messages.checks.estructure}}"

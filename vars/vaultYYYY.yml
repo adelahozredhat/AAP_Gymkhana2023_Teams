@@ -1,0 +1,5 @@
+---
+messages:
+  checks: 
+    vars: "EXEC_OK"
+work_message: "work"

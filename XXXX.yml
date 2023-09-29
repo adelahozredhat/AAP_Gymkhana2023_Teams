@@ -15,4 +15,4 @@
   - name: Sending message
     ansible.builtin.uri:
       url: "https://api.telegram.org/bot{{ tokenBot }}/sendmessage?chat_id={{ gymkanaGroups[team_name]['chatID'] }}&parse_mode=HTML&text={{ gymkanaGroups[team_name]['msgVar'] | urlencode }}"
-    when: checks_steps0 and checks_steps1
+    when: checks_steps_V == messages.checks.estructure and checks_steps_W == messages.checks.vars
