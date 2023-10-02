@@ -70,7 +70,7 @@
 
   - name: Incorrect order job_templates in workflow
     ansible.builtin.fail:
-      msg: "There was no better create workflow without organization, what a genius"
+      msg: "Not the correct order of the job_template in the workflow, what a genius"
     when:  workflows_nodes_success|from_yaml | difference(steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls'])|length > 0 or steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls']| difference(workflows_nodes_success|from_yaml)|length > 0
     
   - name: Oki checks 0
