@@ -34,15 +34,15 @@
     ansible.controller.export:
       validate_certs: no
       all: false
-      workflow_job_templates: "{{tower_workflow_job_name}}"
+      workflow_job_templates: "{{awx_workflow_job_name}}"
     register: output_workflow_info
 
   - name: Incorrect name Workflow
     vars:
       organization_name: "{{ output_job_template_info.assets.job_templates[0].natural_key.organization.name }}"
     ansible.builtin.fail:
-      msg: "There was no better name for the workflow, what a genius ::: '{{tower_workflow_job_name}}'"
-    when: tower_workflow_job_name != organization_name+" Workflow to validate"
+      msg: "There was no better name for the workflow, what a genius ::: '{{awx_workflow_job_name}}'"
+    when: awx_workflow_job_name != organization_name+" Workflow to validate"
 
   - name: Incorrect organization select in Workflow
     ansible.builtin.fail:
