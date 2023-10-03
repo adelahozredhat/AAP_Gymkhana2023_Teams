@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
-  connection: local 
+  connection: local
   gather_facts: no
   vars_files:
     - vaultZZZZ.yml
@@ -23,7 +23,7 @@
       validate_certs: no
       all: false
       job_templates: "{{steps_names[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_names']}}"
-    register: list_job_template_info  
+    register: list_job_template_info
 
   - name: Incorrect names jobs templates
     ansible.builtin.fail:
@@ -38,25 +38,27 @@
     register: output_workflow_info
 
   - name: Incorrect name Workflow
+    vars:
+      organization_name: "{{ output_job_template_info.assets.job_templates[0].natural_key.organization.name }}"
     ansible.builtin.fail:
       msg: "There was no better name for the workflow, what a genius ::: '{{tower_workflow_job_name}}'"
-    when: tower_workflow_job_name != output_job_template_info.assets.job_templates[0].natural_key.organization.name+" Workflow to validate"
+    when: tower_workflow_job_name != organization_name+" Workflow to validate"
 
   - name: Incorrect organization select in Workflow
     ansible.builtin.fail:
       msg: "There was no better create workflow without organization, what a genius"
     when:  output_workflow_info.assets.workflow_job_templates[0].organization is none or output_workflow_info.assets.workflow_job_templates[0].organization.name != output_job_template_info.assets.job_templates[0].natural_key.organization.name
-      
+
   - name: Incorrect order job_templates in workflow
-    set_fact: 
+    set_fact:
       workflows_nodes: "{{ workflows_nodes | default([]) | combine ([ {item.unified_job_template.name : { 'success_nodes': item.related.success_nodes} }]) }}"
       jobtemplates_ids_workflow: "{{ jobtemplates_ids_workflow | default({}) | combine ({ item.identifier : { 'job_template_name': item.unified_job_template.name } }) }}"
     loop: "{{output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes}}"
-      
+
   - name: Incorrect order job_templates in workflow
-    set_fact: 
+    set_fact:
       workflows_nodes_success: |
-        {% for x in output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes %}  
+        {% for x in output_workflow_info.assets.workflow_job_templates[0].related.workflow_nodes %}
         {% for v in x.related.success_nodes %}
         - success_nodes_{{ x.unified_job_template.name}}_{{jobtemplates_ids_workflow[v.identifier].job_template_name}}
         {% endfor %}
@@ -72,7 +74,7 @@
     ansible.builtin.fail:
       msg: "Not the correct order of the job_template in the workflow, what a genius"
     when:  workflows_nodes_success|from_yaml | difference(steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls'])|length > 0 or steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls']| difference(workflows_nodes_success|from_yaml)|length > 0
-    
+
   - name: Oki checks 0
     ansible.builtin.set_stats:
       data:
