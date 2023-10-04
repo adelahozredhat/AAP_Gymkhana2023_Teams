@@ -7,14 +7,14 @@
 
   tasks:
 
-  - name: Incorrect names jobs templates
+  - name: Check job_template execute in workflow
     ansible.builtin.fail:
-      msg: "There was not included job_template in a workflow, what a genius"
+      msg: "SECURE RULE VIOLATE::This job_template is only execute in a workflow"
     when: awx_workflow_job_name is undefined
 
   - name: Incorrect var
     ansible.builtin.fail:
-      msg: "Incorrect var value, what a genius :: value is {{work_message}}"
+      msg: "SECURE RULE VIOLATE::Value not_work is incorrect value is {{work_message}}, this protocol is to check permison to add vars and show execution logs"
     when: not_work | default("") != work_message
     no_log: "{{var_logs | default(true)}}"
 

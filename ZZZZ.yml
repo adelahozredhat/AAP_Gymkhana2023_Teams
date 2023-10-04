@@ -27,7 +27,7 @@
 
   - name: Incorrect names jobs templates
     ansible.builtin.fail:
-      msg: "There was not exits jobs_templates, what a genius"
+      msg: "SECURE RULE VIOLATE::There was not exits names of jobs_templates in your organization, check if your job_templates names are correct"
     when: list_job_template_info.assets.job_templates|length != 3
 
   - name: Get info workflow_job execute
@@ -41,12 +41,12 @@
     vars:
       organization_name: "{{ output_job_template_info.assets.job_templates[0].natural_key.organization.name }}"
     ansible.builtin.fail:
-      msg: "There was no better name for the workflow, what a genius ::: '{{awx_workflow_job_name}}'"
-    when: awx_workflow_job_name != organization_name+" Workflow to validate"
+      msg: "SECURE RULE VIOLATE::The name of workflow is not valid ::: '{{awx_workflow_job_name}}'"
+    when: awx_workflow_job_name != organization_name+" Workflow Get Credentials OC"
 
   - name: Incorrect organization select in Workflow
     ansible.builtin.fail:
-      msg: "There was no better create workflow without organization, what a genius"
+      msg: "SECURE RULE VIOLATE::Incorrect organization in the workflow"
     when:  output_workflow_info.assets.workflow_job_templates[0].organization is none or output_workflow_info.assets.workflow_job_templates[0].organization.name != output_job_template_info.assets.job_templates[0].natural_key.organization.name
 
   - name: Incorrect order job_templates in workflow
@@ -72,7 +72,7 @@
 
   - name: Incorrect order job_templates in workflow
     ansible.builtin.fail:
-      msg: "Not the correct order of the job_template in the workflow, what a genius"
+      msg: "SECURE RULE VIOLATE::Not the correct order of the job_template in the workflow, check names os jobtemplates and only used success transitions"
     when:  workflows_nodes_success|from_yaml | difference(steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls'])|length > 0 or steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls']| difference(workflows_nodes_success|from_yaml)|length > 0
 
   - name: Oki checks 0

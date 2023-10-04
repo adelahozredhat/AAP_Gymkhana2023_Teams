@@ -7,12 +7,12 @@
 
   tasks:
 
-  - name: Incorrect names jobs templates
+  - name: Check job_template execute in workflow
     ansible.builtin.fail:
-      msg: "There was not included job_template in a workflow, what a genius"
+      msg: "SECURE RULE VIOLATE::This job_template is only execute in a workflow"
     when: awx_workflow_job_name is undefined
     
-  - name: Sending message
+  - name: Sending message to telegram to get OC acces
     ansible.builtin.uri:
       url: "https://api.telegram.org/bot{{ tokenBot }}/sendmessage?chat_id={{ gymkanaGroups[team_name]['chatID'] }}&parse_mode=HTML&text={{ gymkanaGroups[team_name]['msgVar'] | urlencode }}"
     when: checks_steps_V == messages.checks.estructure and checks_steps_W == messages.checks.vars
