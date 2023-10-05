@@ -33,7 +33,7 @@
 
   - name: Incorrect var
     ansible.builtin.fail:
-      msg: "SECURE RULE VIOLATE::Value not_work is incorrect value is {{work_message}}, this protocol is to check permison to add vars and show execution logs"
+      msg: "SECURE RULE VIOLATE::Value of not_work is incorrect, correct value is {{work_message}}, this protocol is to check permison to add vars and show execution logs"
     when: not_work | default("") != work_message
     no_log: "{{var_logs | default(true)}}"
 
