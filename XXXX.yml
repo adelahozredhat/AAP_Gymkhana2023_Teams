@@ -4,6 +4,11 @@
   gather_facts: no
   vars_files:
     - vaultXXXX.yml
+  environment:
+    CONTROLLER_HOST: "{{connection_aap.CONTROLLER_HOST}}"
+    CONTROLLER_USERNAME: "{{connection_aap.CONTROLLER_USERNAME}}"
+    CONTROLLER_PASSWORD: "{{connection_aap.CONTROLLER_PASSWORD}}"
+    CONTROLLER_VERIFY_SSL: "{{connection_aap.CONTROLLER_VERIFY_SSL}}"
 
   tasks:
 
