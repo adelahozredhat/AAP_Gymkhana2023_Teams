@@ -18,6 +18,13 @@
       job_templates: "{{tower_job_template_name}}"
     register: output_job_template_info
 
+  - name: Incorrect name job_template
+    vars:
+      organization_name: "{{ output_job_template_info.assets.job_templates[0].natural_key.organization.name }}"
+    ansible.builtin.fail:
+      msg: "SECURE RULE VIOLATE::The name of job_template is not valid"
+    when: awx_job_template_name != organization_name+" "+job_template_name
+
   - name: Get list job_template execute
     ansible.controller.export:
       validate_certs: no
