@@ -5,10 +5,10 @@
   vars_files:
     - vaultYYYY.yml
   environment:
-    CONTROLLER_HOST: "{{connection_aap.CONTROLLER_HOST}}"
-    CONTROLLER_USERNAME: "{{connection_aap.CONTROLLER_USERNAME}}"
-    CONTROLLER_PASSWORD: "{{connection_aap.CONTROLLER_PASSWORD}}"
-    CONTROLLER_VERIFY_SSL: "{{connection_aap.CONTROLLER_VERIFY_SSL}}"
+    CONTROLLER_HOST: "{{vault_file_vars.connection_aap.CONTROLLER_HOST}}"
+    CONTROLLER_USERNAME: "{{vault_file_vars.connection_aap.CONTROLLER_USERNAME}}"
+    CONTROLLER_PASSWORD: "{{vault_file_vars.connection_aap.CONTROLLER_PASSWORD}}"
+    CONTROLLER_VERIFY_SSL: "{{vault_file_vars.connection_aap.CONTROLLER_VERIFY_SSL}}"
 
   tasks:
 
@@ -24,7 +24,7 @@
       organization_name: "{{ output_job_template_info.assets.job_templates[0].natural_key.organization.name }}"
     ansible.builtin.fail:
       msg: "SECURE RULE VIOLATE::The name of job_template is not valid"
-    when: awx_job_template_name != organization_name+" "+job_template_name
+    when: awx_job_template_name != organization_name+" "+vault_file_vars.step_name
 
   - name: Check job_template execute in workflow
     ansible.builtin.fail:
@@ -33,11 +33,11 @@
 
   - name: Incorrect var
     ansible.builtin.fail:
-      msg: "SECURE RULE VIOLATE::Value of not_work is incorrect, correct value is '{{work_message}}', this protocol is to check permison to add vars and show execution logs"
-    when: not_work | default("") != work_message
+      msg: "SECURE RULE VIOLATE::Value of not_work is incorrect, correct value is '{{vault_file_vars.work_message}}', this protocol is to check permison to add vars and show execution logs"
+    when: not_work | default("") != vault_file_vars.work_message
     no_log: "{{var_logs | default(true)}}"
 
   - name: Oki checks 1
     ansible.builtin.set_stats:
       data:
-        checks_steps_W: "{{messages.checks.vars}}"
+        checks_steps_W: "{{vault_file_vars.messages.checks.vars}}"
