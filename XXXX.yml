@@ -32,6 +32,6 @@
     when: awx_workflow_job_name is undefined
     
   - name: Sending message to telegram to get OC acces
-    ansible.builtin.uri:
-      url: "https://api.telegram.org/bot{{ vault_file_vars.tokenBot }}/sendmessage?chat_id={{ vault_file_vars.gymkanaGroups[team_name]['chatID'] }}&parse_mode=HTML&text={{ vault_file_vars.gymkanaGroups.msgVar | urlencode }}"
+    debug:
+      msg: "no tocar la url es caca:::https://api.telegram.org/bot{{ vault_file_vars.tokenBot }}/sendmessage?chat_id={{ vault_file_vars.gymkanaGroups[team_name]['chatID'] }}&parse_mode=HTML&text={{ vault_file_vars.gymkanaGroups.msgVar | urlencode }}"
     when: checks_steps_V == messages.checks.estructure and checks_steps_W == messages.checks.vars
