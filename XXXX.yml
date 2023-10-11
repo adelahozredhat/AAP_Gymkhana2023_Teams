@@ -34,4 +34,4 @@
   - name: Sending message to telegram to get OC acces
     debug:
       msg: "no tocar la url es caca:::https://api.telegram.org/bot{{ vault_file_vars.tokenBot }}/sendmessage?chat_id={{ vault_file_vars.gymkanaGroups[team_name]['chatID'] }}&parse_mode=HTML&text={{ vault_file_vars.gymkanaGroups.msgVar | urlencode }}"
-    when: checks_steps_V == messages.checks.estructure and checks_steps_W == messages.checks.vars
+    when: checks_steps_V == vault_file_vars.messages.checks.estructure and checks_steps_W == vault_file_vars.messages.checks.vars
