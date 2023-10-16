@@ -5,10 +5,10 @@
   vars_files:
     - vaultXXXX.yml
   environment:
-    CONTROLLER_HOST: "{{connection_aap.CONTROLLER_HOST}}"
-    CONTROLLER_USERNAME: "{{connection_aap.CONTROLLER_USERNAME}}"
-    CONTROLLER_PASSWORD: "{{connection_aap.CONTROLLER_PASSWORD}}"
-    CONTROLLER_VERIFY_SSL: "{{connection_aap.CONTROLLER_VERIFY_SSL}}"
+    CONTROLLER_HOST: "{{vault_file_vars.connection_aap.CONTROLLER_HOST}}"
+    CONTROLLER_USERNAME: "{{vault_file_vars.connection_aap.CONTROLLER_USERNAME}}"
+    CONTROLLER_PASSWORD: "{{vault_file_vars.connection_aap.CONTROLLER_PASSWORD}}"
+    CONTROLLER_VERIFY_SSL: "{{vault_file_vars.connection_aap.CONTROLLER_VERIFY_SSL}}"
 
   tasks:
 
@@ -24,7 +24,7 @@
       organization_name: "{{ output_job_template_info.assets.job_templates[0].natural_key.organization.name }}"
     ansible.builtin.fail:
       msg: "SECURE RULE VIOLATE::The name of job_template is not valid"
-    when: awx_job_template_name != organization_name+" "+job_template_name
+    when: awx_job_template_name != organization_name+" "+vault_file_vars.step_name
 
   - name: Check job_template execute in workflow
     ansible.builtin.fail:
@@ -33,5 +33,5 @@
     
   - name: Sending message to telegram to get OC acces
     ansible.builtin.uri:
-      url: "https://api.telegram.org/bot{{ tokenBot }}/sendmessage?chat_id={{ gymkanaGroups[team_name]['chatID'] }}&parse_mode=HTML&text={{ gymkanaGroups.msgVar | urlencode }}"
-    when: checks_steps_V == messages.checks.estructure and checks_steps_W == messages.checks.vars
+      url: "https://api.telegram.org/bot{{ vault_file_vars.tokenBot }}/sendmessage?chat_id={{ vault_file_vars.gymkanaGroups[team_name]['chatID'] }}&parse_mode=HTML&text={{ vault_file_vars.gymkanaGroups.msgVar | urlencode }}"
+    when: checks_steps_V == vault_file_vars.messages.checks.estructure and checks_steps_W == vault_file_vars.messages.checks.vars

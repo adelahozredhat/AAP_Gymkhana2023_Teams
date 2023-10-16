@@ -5,10 +5,10 @@
   vars_files:
     - vaultZZZZ.yml
   environment:
-    CONTROLLER_HOST: "{{connection_aap.CONTROLLER_HOST}}"
-    CONTROLLER_USERNAME: "{{connection_aap.CONTROLLER_USERNAME}}"
-    CONTROLLER_PASSWORD: "{{connection_aap.CONTROLLER_PASSWORD}}"
-    CONTROLLER_VERIFY_SSL: "{{connection_aap.CONTROLLER_VERIFY_SSL}}"
+    CONTROLLER_HOST: "{{vault_file_vars.connection_aap.CONTROLLER_HOST}}"
+    CONTROLLER_USERNAME: "{{vault_file_vars.connection_aap.CONTROLLER_USERNAME}}"
+    CONTROLLER_PASSWORD: "{{vault_file_vars.connection_aap.CONTROLLER_PASSWORD}}"
+    CONTROLLER_VERIFY_SSL: "{{vault_file_vars.connection_aap.CONTROLLER_VERIFY_SSL}}"
   tasks:
 
   - name: Get info job_template execute
@@ -23,13 +23,13 @@
       organization_name: "{{ output_job_template_info.assets.job_templates[0].natural_key.organization.name }}"
     ansible.builtin.fail:
       msg: "SECURE RULE VIOLATE::The name of job_template is not valid"
-    when: awx_job_template_name != organization_name+" "+job_template_name
+    when: awx_job_template_name != organization_name+" "+vault_file_vars.step_name
 
   - name: Get list job_template execute
     ansible.controller.export:
       validate_certs: no
       all: false
-      job_templates: "{{steps_names[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_names']}}"
+      job_templates: "{{vault_file_vars.steps_names[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_names']}}"
     register: list_job_template_info
 
   - name: Incorrect names jobs templates
@@ -56,7 +56,7 @@
       msg: "SECURE RULE VIOLATE::Incorrect organization in the workflow"
     when:  output_workflow_info.assets.workflow_job_templates[0].organization is none or output_workflow_info.assets.workflow_job_templates[0].organization.name != output_job_template_info.assets.job_templates[0].natural_key.organization.name
 
-  - name: Incorrect order job_templates in workflow
+  - name: Get info job_templates in workflow
     set_fact:
       workflows_nodes: "{{ workflows_nodes | default([]) | combine ([ {item.unified_job_template.name : { 'success_nodes': item.related.success_nodes} }]) }}"
       jobtemplates_ids_workflow: "{{ jobtemplates_ids_workflow | default({}) | combine ({ item.identifier : { 'job_template_name': item.unified_job_template.name } }) }}"
@@ -80,9 +80,9 @@
   - name: Incorrect order job_templates in workflow
     ansible.builtin.fail:
       msg: "SECURE RULE VIOLATE::Not the correct order of the job_template in the workflow, check names os jobtemplates and only used success transitions"
-    when:  workflows_nodes_success|from_yaml | difference(steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls'])|length > 0 or steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls']| difference(workflows_nodes_success|from_yaml)|length > 0
+    when:  workflows_nodes_success|from_yaml | difference(vault_file_vars.steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls'])|length > 0 or vault_file_vars.steps_calls[output_job_template_info.assets.job_templates[0].natural_key.organization.name+'_steps_calls']| difference(workflows_nodes_success|from_yaml)|length > 0
 
   - name: Oki checks 0
     ansible.builtin.set_stats:
       data:
-        checks_steps_V: "{{messages.checks.estructure}}"
+        checks_steps_V: "{{vault_file_vars.messages.checks.estructure}}"
